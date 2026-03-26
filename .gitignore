@@ -8,3 +8,5 @@
 go.work
 tools
 tools/**
+bin
+bin/**
