@@ -1,5 +1,5 @@
 # Maintainer: SocketByte <business@socketbyte.pl>
-pkgname=upscale
+pkgname=upscale-git
 pkgver=0.1.0
 pkgrel=1
 pkgdesc="AI-powered image and video upscaling tool (RealESRGAN, SwinIR, Anime4K)"
@@ -10,10 +10,15 @@ depends=('ffmpeg' 'realesrgan-ncnn-vulkan-bin' 'python' 'python-pip')
 optdepends=(
     'cuda: GPU acceleration for SwinIR'
 )
-makedepends=('go' 'git')
+makedepends=('go')
 install=$pkgname.install
-source=("$pkgname::git+$url.git")
+source=("git+$url.git")
 sha256sums=('SKIP')
+
+pkgver() {
+    cd "$srcdir/$pkgname"
+    git describe --long --tags --always | sed 's/^v//;s/-/+/g'
+}
 
 build() {
     cd "$srcdir/$pkgname"
@@ -31,10 +36,9 @@ package() {
 
     install -dm755 "$pkgdir/usr/share/$pkgname/tools/anime4k"
     for glsl in tools/anime4k/*.glsl; do
-        install -Dm644 "$glsl" "$pkgdir/usr/share/$pkgname/$glsl"
+        install -Dm644 "$glsl" \
+            "$pkgdir/usr/share/$pkgname/tools/anime4k/$(basename "$glsl")"
     done
 
-    if [ -f LICENSE ]; then
-        install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
-    fi
+    install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
 }
