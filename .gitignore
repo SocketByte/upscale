@@ -6,7 +6,8 @@
 *.test
 *.out
 go.work
-tools
-tools/**
+tools/ffmpeg/**
+tools/realesrgan/**
+tools/pytorch/**
 bin
 bin/**
