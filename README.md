@@ -30,7 +30,7 @@ Upscale images and videos with a fast and easy to use cross-platform CLI built a
 
 ### Arch Linux
 ```
-yay -S upscale
+yay -S upscale-git
 ```
 
 ### Binaries (Windows, MacOS, Linux)
