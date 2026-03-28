@@ -5,6 +5,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"strings"
 )
 
 func toolPlatformDir() string {
@@ -92,6 +93,15 @@ func resolveRealESRGANModelsDir(toolsDir string) string {
 		return p
 	}
 	return filepath.Join(toolsDir, "realesrgan", toolPlatformDir(), "models")
+}
+
+func shouldPassRealESRGANModelsDir(binary string) bool {
+	if runtime.GOOS != "linux" {
+		return true
+	}
+
+	cleanBinary := filepath.Clean(binary)
+	return !strings.HasPrefix(cleanBinary, "/usr/bin/")
 }
 
 func resolveSwinIRDir(toolsDir string) string {

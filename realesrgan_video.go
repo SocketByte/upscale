@@ -179,7 +179,9 @@ func (a *RealESRGANVideoAdapter) upscaleFrames(ctx context.Context, esrgan, fram
 		"-o", upscaledDir,
 		"-n", model,
 		"-s", strconv.Itoa(scale),
-		"-m", a.esrganModels(),
+	}
+	if shouldPassRealESRGANModelsDir(esrgan) {
+		args = append(args, "-m", a.esrganModels())
 	}
 	cmd := exec.CommandContext(ctx, esrgan, args...)
 

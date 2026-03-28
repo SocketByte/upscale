@@ -83,14 +83,16 @@ func (a *RealESRGANAdapter) Run(ctx context.Context, job *Job) error {
 	binary := cfg["binary"].(string)
 	model := cfg["model"].(string)
 	scale := cfg["scale"].(int)
-	modelsPath := cfg["models_path"].(string)
 
 	args := []string{
 		"-i", job.InputPath,
 		"-o", job.OutputPath,
 		"-n", model,
 		"-s", strconv.Itoa(scale),
-		"-m", modelsPath,
+	}
+	if shouldPassRealESRGANModelsDir(binary) {
+		modelsPath := cfg["models_path"].(string)
+		args = append(args, "-m", modelsPath)
 	}
 
 	job.Events <- Event{
